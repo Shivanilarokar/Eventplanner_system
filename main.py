@@ -1,4 +1,4 @@
-import streamlit as st
+
 from businesslogic import (
     create_event,
     add_guest_to_event,
@@ -8,48 +8,38 @@ from businesslogic import (
     search_guest_by_email
 )
 
-# Streamlit Page Config
-st.set_page_config(page_title="📋 DataSense Event Planner", layout="centered")
-st.title("📋 Welcome to DataSense Event Planner")
+def menu():
+    while True:
+        print("""
+📋 Welcome to DataSense Event Planner!
 
-# Menu options
-menu_options = [
-    "Create New Event",
-    "Add Guest to Event",
-    "View Guest List",
-    "Show RSVP Summary",
-    "Show Events with No Guests",
-    "Search Guest by Email",
-]
+1. Create New Event
+2. Add Guest to Event
+3. View Guest List
+4. Show RSVP Summary
+5. Show Events with No Guests
+6. Search Guest by Email
+7. Exit
+""")
+        choice = input("Enter your choice: ")
 
-# Sidebar Navigation
-choice = st.sidebar.radio("Navigation", menu_options)
+        if choice == "1":
+            create_event()
+        elif choice == "2":
+            add_guest_to_event()
+        elif choice == "3":
+            view_guest_list()
+        elif choice == "4":
+            rsvp_summary()
+        elif choice == "5":
+            events_with_no_guests()
+        elif choice == "6":
+            search_guest_by_email()
+        elif choice == "7":
+            print("👋 Exiting. Bye!")
+            break
+        else:
+            print("❌ Invalid choice. Try again.")
 
-# Mapping functions to UI
-if choice == "Create New Event":
-    st.subheader("➕ Create New Event")
-    create_event()
-
-elif choice == "Add Guest to Event":
-    st.subheader("👥 Add Guest to Event")
-    add_guest_to_event()
-
-elif choice == "View Guest List":
-    st.subheader("📜 View Guest List")
-    view_guest_list()
-
-elif choice == "Show RSVP Summary":
-    st.subheader("📊 RSVP Summary")
-    rsvp_summary()
-
-elif choice == "Show Events with No Guests":
-    st.subheader("🚫 Events with No Guests")
-    events_with_no_guests()
-
-elif choice == "Search Guest by Email":
-    st.subheader("🔍 Search Guest by Email")
-    search_guest_by_email()
-
-# Footer
-st.markdown("---")
-st.caption("Crafted with ❤️ by Shivani using Streamlit")
+if __name__ == "__main__":
+    menu()
