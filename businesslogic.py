@@ -49,8 +49,11 @@ def add_guest_to_event():
  
 # view guest list for an event
 def view_guest_list():
-    event_id = input("Enter event ID to view guest list: ")
+     # First, show events so user can pick
+    if not show_all_events():
+        return  # stop if no events
 
+    event_id = input("Enter event ID to view guest list: ")
     query = "SELECT * FROM guests WHERE event_id = %s"
     values = (event_id,)
     results = execute_query(query, values, fetch=True)
@@ -58,7 +61,7 @@ def view_guest_list():
     if results:
         print(f"Guest list for event ID {event_id}:")
         for row in results:
-            print(f" Event ID: {row[2]}, Name: {row[3]}, Email: {row[4]}, RSVP Status: {row[5]}")
+            print(f" Event ID: {row[1]}, Name: {row[2]}, Email: {row[3]}, RSVP Status: {row[4]}")
     else:
         print("No guests found for this event.")
 

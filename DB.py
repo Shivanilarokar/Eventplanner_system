@@ -1,4 +1,4 @@
-import psycopg2
+
 from urllib.parse import quote
 
 # Database connection parameters
@@ -14,7 +14,7 @@ PG_CONNECTION_STRING = f"postgresql://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT
 
 # ✅ Show connection string (mask password)
 print("Connection String:", PG_CONNECTION_STRING.replace(PG_PASSWORD, "******"))
-
+import psycopg2
 # ✅ Try to connect once when DB.py runs to show message
 try:
     test_connection = psycopg2.connect(PG_CONNECTION_STRING)
