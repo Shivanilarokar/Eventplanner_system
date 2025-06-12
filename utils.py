@@ -1,10 +1,34 @@
-# validate date input in the format YYYY-MM-DD
 from datetime import datetime
+import re
 
-def input_date(date):
+def get_valid_date(prompt="Date (YYYY-MM-DD): "):
     while True:
+        d = input(prompt)
         try:
-            date_str = input(date)
-            return datetime.strptime(date_str, "%Y-%m-%d").date()
-        except ValueError:
-            print("❌ Invalid format. Please use YYYY-MM-DD.") 
+            datetime.strptime(d, "%Y-%m-%d")
+            return d
+        except: print("❌ Format must be YYYY-MM-DD.")
+
+def get_non_empty_input(prompt="Enter value: "):
+    while True:
+        val = input(prompt).strip()
+        if val: return val
+        print("❌ Cannot be empty.")
+
+def get_valid_email(prompt="Enter email: "):
+    while True:
+        e = input(prompt).strip()
+        if re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', e): return e
+        print("❌ Invalid email.")
+
+def get_valid_rsvp(prompt="RSVP (Yes/No/Maybe): "):
+    while True:
+        r = input(prompt).capitalize()
+        if r in {"Yes", "No", "Maybe"}: return r
+        print("❌ Choose Yes / No / Maybe.")
+
+def get_valid_int(prompt="Enter number: "):
+    while True:
+        n = input(prompt)
+        if n.isdigit(): return int(n)
+        print("❌ Only digits allowed.")
