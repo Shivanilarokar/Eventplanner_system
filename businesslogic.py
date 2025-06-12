@@ -1,4 +1,4 @@
-
+import psycopg2
 from DB import execute_query
 # create a new event
 def create_event():
@@ -9,10 +9,27 @@ def create_event():
     query = "INSERT INTO events (event_name, event_date, location) VALUES (%s, %s, %s)"
     values = (event_name, event_date, location) 
     execute_query(query, values)
-    print("Event created successfully!")
+    print(" ✅ Event created successfully!") 
 
-# add a guest to an event
+# show all events
+def show_all_events():
+    query = "SELECT event_id, event_name, event_date , location FROM events"
+    events = execute_query(query, fetch=True)
+    if events:
+        print("\n📅 Available Events:")
+        for event in events:
+            print(f"ID: {event[0]},  Event Name: {event[1]}, Date: {event[2]} , Location: {event[3]}") 
+    else:
+        print("❌ No events available. Please create an event first.\n")
+        return False
+    return True
+
+# add a guest to an event 
 def add_guest_to_event():
+    # First, show events so user can pick
+    if not show_all_events():
+        return  # stop if no events
+    
     event_id = input("Enter event ID: ")
     Guest_name = input("Enter guest name: ")
     email = input("Enter guest email: ")
@@ -20,10 +37,16 @@ def add_guest_to_event():
 
     query = "INSERT INTO guests (event_id, name, email, rsvp_status) VALUES (%s, %s, %s, %s)"
     values = (event_id, Guest_name, email, rsvp_status)
-    execute_query(query, values)
-    print("Guests added successfully!")
+   
+    try:
+        execute_query(query, values)
+        print("✅ Guest added successfully!")
+    except psycopg2.errors.UniqueViolation:
+     print("⚠️ Guest with this email already exists for this event.")
+    except Exception as e:
+     print("❌ Failed to add guest:", e)
 
-
+ 
 # view guest list for an event
 def view_guest_list():
     event_id = input("Enter event ID to view guest list: ")
@@ -35,7 +58,7 @@ def view_guest_list():
     if results:
         print(f"Guest list for event ID {event_id}:")
         for row in results:
-            print(f"ID: {row[0]}, Name: {row[1]}, Email: {row[2]}, RSVP Status: {row[3]}")
+            print(f" Event ID: {row[2]}, Name: {row[3]}, Email: {row[4]}, RSVP Status: {row[5]}")
     else:
         print("No guests found for this event.")
 
